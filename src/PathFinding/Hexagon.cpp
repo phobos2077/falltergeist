@@ -167,4 +167,14 @@ unsigned int Hexagon::orientationTo(Hexagon* hexagon)
     return 0;
 }
 
+Game::GameObject* Hexagon::objectByPID(int pid)
+{
+    for (auto object : _objects)
+    {
+        if (object->PID() == pid) return object;
+    }
+    return nullptr;
+}
+
+
 }

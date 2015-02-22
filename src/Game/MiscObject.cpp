@@ -38,5 +38,11 @@ GameMiscObject::~GameMiscObject()
 {
 }
 
+bool GameMiscObject::isScrollBlocker()
+{
+    return PID() == 0x0500000C;
+}
+
+
 }
 }

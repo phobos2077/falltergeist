@@ -69,6 +69,8 @@ public:
     std::vector<Hexagon*>* neighbors();
 
     std::list<Game::GameObject*>* objects();
+    
+    Game::GameObject* objectByPID(int pid);
 
     int cubeX();
     void setCubeX(int value);

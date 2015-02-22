@@ -38,6 +38,8 @@ protected:
 public:
     GameMiscObject();
     virtual ~GameMiscObject();
+    
+    bool isScrollBlocker();
 };
 
 }

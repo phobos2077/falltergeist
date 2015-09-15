@@ -71,5 +71,13 @@ function mainMenu:render()
 
 end
 
+local vec = game.vectorTest()
+print(vec, #vec)
+for i,v in ipairs(vec) do
+    print(i, v)
+end
+
+game.vectorParam({6, 1, "dfdf", "Perfect"})
+
 
 do return mainMenu end

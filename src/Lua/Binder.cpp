@@ -18,6 +18,7 @@
  */
 
 // C++ standard includes
+#include <vector>
 
 // Libfalltergeist includes
 #include "../Event/Event.h"
@@ -26,8 +27,10 @@
 #include "../Game/Game.h"
 #include "../Point.h"
 #include "../Input/Mouse.h"
+#include "../Logger.h"
 #include "../Lua/Binder.h"
 #include "../Lua/ImageButton.h"
+#include "../Lua/LuabridgeStack.h"
 #include "../Lua/TextArea.h"
 #include "../Lua/Script.h"
 #include "../State/LuaState.h"
@@ -56,6 +59,66 @@ luabridge::Namespace Binder::_gameNamespace()
     return luabridge::getGlobalNamespace(_luaState).beginNamespace("game");
 }
 
+std::vector<std::string> vectorTest()
+{
+    return std::vector<std::string> {"Actual", "plain", "std", "vector!!"};
+}
+
+static std::vector<std::string> staticVec {"Actual", "plain", "std", "vector!!"};
+const std::vector<std::string>& vectorConstTest()
+{
+    return staticVec;
+}
+
+void vectorParamConst(const std::vector<std::string>& vec)
+{
+    auto& log = Logger::info("Lua");
+    log << "vectorParam: ";
+    for (auto str : vec)
+    {
+        log << str << ';';
+    }
+    log << std::endl;
+}
+
+void vectorParam(std::vector<std::string> vec)
+{
+    vectorParamConst(vec);
+}
+
+std::list<Point> listTest()
+{
+    return { {1, 2}, {105, 92}, {-25, 0}, {777, 999} };
+}
+
+void listParamConst(const std::list<Point>& list)
+{
+    auto& log = Logger::info("Lua");
+    log << "listParam: ";
+    for (auto pt : list)
+    {
+        log << pt << ';';
+    }
+    log << std::endl;
+}
+
+std::map<std::string, int> mapTest()
+{
+    return {{"three", 3}, {"four", 4}, {"minus one", -1}};
+};
+
+void mapParam(std::map<std::string, int> map)
+{
+    auto& log = Logger::info("Lua");
+    log << "mapParam: ";
+    for (auto pt : map)
+    {
+        log << pt.first << '=' << pt.second << "; ";
+    }
+    log << std::endl;
+}
+
+
 void Binder::bindAll()
 {
     // TODO: better solution?
@@ -78,6 +141,16 @@ void Binder::bindAll()
 
         // game.translate
         .addFunction("translate", translate)
+
+        .addFunction("vectorTest", vectorTest)
+        .addFunction("vectorConstTest", vectorConstTest)
+        .addFunction("vectorParam", vectorParam)
+        .addFunction("vectorParamConst", vectorParamConst)
+        .addFunction("listTest", listTest)
+        .addFunction("listParamConst", listParamConst)
+
+        .addFunction("mapTest", mapTest)
+        .addFunction("mapParam", mapParam)
 
         // game.mouse
         .addProperty ("mouse", getterGameMouse, (void(*)(Input::Mouse*))nullptr)
@@ -174,6 +247,27 @@ void Binder::_bindStates()
         .endClass()
     ;
 }
+
+/*
+template <typename T>
+void Binder::_bindVector(const char* name)
+{
+    _gameNamespace()
+        .beginClass< LuaVector<T> >(name)
+            .addFunction("__index", &LuaVector<T>::index)
+            .addFunction("__newindex", &LuaVector<T>::newindex)
+            .addFunction("__len", &LuaVector<T>::len)
+            .addFunction("__eq", &LuaVector<T>::eq)
+        .endClass()
+
+        .beginClass< std::vector<T> >(name)
+            .addFunction("__index", static_cast<const T& (std::vector<T>::*)(size_t) const>(&std::vector<T>::at))
+            //.addFunction("__newindex", &LuaVector<T>::newindex)
+            .addFunction("__len", &std::vector<T>::size)
+            //.addFunction("__eq", static_cast<bool (*)(const std::vector<T>&, const std::vector<T>&)>(&std::operator==<T>))
+        .endClass();
+}
+*/
 
 }
 }

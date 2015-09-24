@@ -28,14 +28,6 @@ local input = require("input")
 -- class/module table
 local MainMenu = State:subclass "MainMenu"
 
-function MainMenu:LittleRedButton(x, y)
-    return ImageButton:new(self, "art/intrface/lilredup.frm", "art/intrface/lilreddn.frm", "sound/sfx/ib1lu1x1.acm", "sound/sfx/ib1p1xx1.acm",  x or 0, y or 0)
-end
-
-function MainMenu:BigMenuButton(x, y)
-    return ImageButton:new(self, "art/intrface/menuup.frm", "art/intrface/menudown.frm", "sound/sfx/nmselec1.acm", "sound/sfx/nmselec0.acm",  x or 0, y or 0)
-end
-
 function MainMenu:BigLabel(textId, x, y)
     local ta = TextArea:new(self, game._t(enum.MSG_FILE.MISC, textId), x or 0, y or 0)
     ta:setFont("font4.aaf", 0xb89c28ff)
@@ -94,12 +86,12 @@ function MainMenu:initialize()
     Image:new(self, "art/intrface/mainmenu.frm")
 
     -- Buttons
-    local introButton    = self:BigMenuButton(30, 19);
-    local newGameButton  = self:BigMenuButton(30, 19 + 41);
-    local loadGameButton = self:BigMenuButton(30, 19 + 41*2);
-    local settingsButton = self:BigMenuButton(30, 19 + 41*3);
-    local creditsButton  = self:BigMenuButton(30, 19 + 41*4);
-    local exitButton     = self:BigMenuButton(30, 19 + 41*5);
+    local introButton    = ImageButton.Menu:new(self, 30, 19);
+    local newGameButton  = ImageButton.Menu:new(self, 30, 19 + 41);
+    local loadGameButton = ImageButton.Menu:new(self, 30, 19 + 41*2);
+    local settingsButton = ImageButton.Menu:new(self, 30, 19 + 41*3);
+    local creditsButton  = ImageButton.Menu:new(self, 30, 19 + 41*4);
+    local exitButton     = ImageButton.Menu:new(self, 30, 19 + 41*5);
 
     -- Labels
     self:BigLabel( 9, 50, 20) -- intro

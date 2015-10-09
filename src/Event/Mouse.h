@@ -57,8 +57,9 @@ public:
     static const char* typeToString(Type);
 
     Mouse(Type type);
-    Mouse(const Mouse& event, const std::string& newName);
     Mouse(const Mouse& event);
+    Mouse(const Mouse& event, const std::string& newName);
+    Mouse(const Mouse& event, const std::string& newName, const Point& position);
     ~Mouse() override;
 
     /**

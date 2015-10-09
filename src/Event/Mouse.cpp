@@ -62,6 +62,11 @@ Mouse::Mouse(const Mouse& event) : Mouse(event, event._name)
 {
 }
 
+Mouse::Mouse(const Mouse& event, const std::string& newName, const Point& position) : Mouse(event, newName)
+{
+    setPosition(position);
+}
+
 Mouse::~Mouse()
 {
 }

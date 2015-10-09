@@ -242,17 +242,17 @@ void Base::handle(Event::Mouse* mouseEvent)
                 if (!_hovered)
                 {
                     _hovered = true;
-                    emitEvent(make_unique<Mouse>(*mouseEvent, "mousein"), mouseInHandler());
+                    emitEvent(make_unique<Mouse>(*mouseEvent, "mousein", relPos), mouseInHandler());
                 }
                 else
                 {
-                    emitEvent(make_unique<Event::Mouse>(*mouseEvent, "mousemove"), mouseMoveHandler());
+                    emitEvent(make_unique<Mouse>(*mouseEvent, "mousemove", relPos), mouseMoveHandler());
                 }
                 break;
             }
             case Mouse::Type::BUTTON_DOWN:
             {
-                emitEvent(make_unique<Event::Mouse>(*mouseEvent), mouseDownHandler());
+                emitEvent(make_unique<Mouse>(*mouseEvent, "mousedown", relPos), mouseDownHandler());
                 switch (mouseEvent->button())
                 {
                     case Mouse::Button::LEFT:
@@ -275,7 +275,7 @@ void Base::handle(Event::Mouse* mouseEvent)
             }
             case Mouse::Type::BUTTON_UP:
             {
-                emitEvent(make_unique<Event::Mouse>(*mouseEvent), mouseUpHandler());
+                emitEvent(make_unique<Mouse>(*mouseEvent, "mouseup", relPos), mouseUpHandler());
                 switch (mouseEvent->button())
                 {
                     case Mouse::Button::LEFT:
@@ -285,9 +285,9 @@ void Base::handle(Event::Mouse* mouseEvent)
                             if (_drag)
                             {
                                 _drag = false;
-                                emitEvent(make_unique<Event::Mouse>(*mouseEvent, "mousedragstop"), mouseDragStopHandler());
+                                emitEvent(make_unique<Mouse>(*mouseEvent, "mousedragstop"), mouseDragStopHandler());
                             }
-                            emitEvent(make_unique<Event::Mouse>(*mouseEvent, "mouseclick"), mouseClickHandler());
+                            emitEvent(make_unique<Mouse>(*mouseEvent, "mouseclick", relPos), mouseClickHandler());
                         }
                         _leftButtonPressed = false;
                         break;
@@ -296,7 +296,7 @@ void Base::handle(Event::Mouse* mouseEvent)
                     {
                         if (_rightButtonPressed)
                         {
-                            emitEvent(make_unique<Event::Mouse>(*mouseEvent, "mouseclick"), mouseClickHandler());
+                            emitEvent(make_unique<Mouse>(*mouseEvent, "mouseclick", relPos), mouseClickHandler());
                         }
                         _rightButtonPressed = false;
                         break;
@@ -327,7 +327,7 @@ void Base::handle(Event::Mouse* mouseEvent)
                 if (_hovered)
                 {
                     _hovered = false;
-                    emitEvent(make_unique<Event::Mouse>(*mouseEvent, "mouseout"), mouseOutHandler());
+                    emitEvent(make_unique<Event::Mouse>(*mouseEvent, "mouseout", relPos), mouseOutHandler());
                 }
                 break;
             }
